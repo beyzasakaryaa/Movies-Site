@@ -6,7 +6,7 @@
 ### ⭐ Favorites Page  
 ![Favorites](./screenshots/favoritepage.png)  
 
-### 📌 Show More Movies  
+###  Show More Movies  
 ![Show More](./screenshots/showmorepage.png)  
 
 
@@ -42,11 +42,6 @@ Browse trending movies, search by title, mark your favorite films, and view deta
 
 ---
 
-##  Demo
-
-*(Optional: insert a URL if hosted, or screenshot)*
-
----
 
 ##  Installation
 
