@@ -1,0 +1,227 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #131720;
+  font-family: sans-serif;
+}
+
+h3 {
+  color: white;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #131720;
+  padding: 10px;
+}
+
+.topnav b a{
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.topnav .search-container{
+  float: right;
+}
+
+form{
+  background-color: #151f30;
+  width: 300px;
+  height: 43px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+}
+
+input{
+  all: unset;
+  font: 15px system-ui;
+  color: #fff;
+  height: 100%;
+  width: 100%;
+  padding: 6px 9px;
+}
+
+.thumbnail{
+  height: 350px;
+  width: 300px;
+  border-radius: 19px;
+}
+
+.column{
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+
+.card{
+  position: relative;         /* gerekirse ileride farklı butonlar için */
+  border-radius: 19px;
+  height: 500px;
+  padding: 15px;
+  text-align: center;
+  background-color: #151f30;
+}
+
+/* === Modal === */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal.open { display: flex; }
+
+.modal-content {
+  background: #0f1420;
+  color: #fff;
+  width: min(900px, 92vw);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+}
+
+.modal-body img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: #151f30;
+}
+
+.modal-text h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+
+.modal-text p {
+  margin: 0;
+  color: #cfd8e3;
+  line-height: 1.6;
+}
+
+.modal-close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  float: right;
+  margin-top: -6px;
+}
+
+@media (max-width: 640px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === IMDb Puanı + Favori === */
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;               /* puan ve yıldız arası boşluk */
+  margin-top: 6px;
+}
+
+.vote {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.vote.good { background:#144d2a; color:#c1ffd8; }  /* 7.5+ */
+.vote.avg  { background:#3a3a14; color:#f5f5b5; }  /* 5.5–7.4 */
+.vote.bad  { background:#4d1414; color:#ffd1d1; }  /* <5.5 */
+
+/* Yıldız butonu: rozetin sağında inline */
+.fav.inline{
+  position: static;           /* absolute değil */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  color: #ffd36e;             /* sarı yıldız */
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2px;
+  transition: transform .15s ease;
+}
+
+.fav.inline:hover { transform: scale(1.15); }
+.fav.inline:focus { outline: 2px solid #ffd36e44; outline-offset: 2px; border-radius: 6px; }
+
+.show-favs-btn {
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #ffd36e;
+  color: #131720;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.show-favs-btn:hover {
+  background-color: #e6b84a;
+}
+
+/* === Toast Bildirim === */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 9999;
+  font-size: 0.9rem;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.load-more {
+  background-color: #b61616; /* kırmızı ton */
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.load-more:hover {
+  background-color: #941212;
+}

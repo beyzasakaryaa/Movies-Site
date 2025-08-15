@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Site</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/movie.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="topnav">
+        <b><a class="active" href="index.html" style="color: rgb(182, 22, 22); padding-top: 30px;"><img src="images/movies_site.png" alt="movies_site" style="margin-left: 50px; width: 225px;"></a></b>
+        <div class="search-container" style="padding-top: 20px;">
+            <form role="search" id="form">
+                <input type="search" id="query" name="q" placeholder="Search...">
+            </form>
+            <button id="show-favs" class="show-favs-btn" style="margin-top: 20px; margin-left: 175px;">⭐ My Favorites</button>
+        </div>
+    </div>
+
+    <br>
+
+    <section class="section" id="section">
+        <!-- <div class="row">
+            <div class="column">
+                <div class="card">
+                    <img class="thumbnail" src="images/avatar1.jpeg" alt="avatar1">
+                    <h3>AVATAR</h3>
+                </div>
+            </div>
+        </div> -->
+    </section>
+
+    <section class="section" id="section"></section>
+
+    <div style="text-align: center; margin: 20px;">
+        <button id="load-more" class="load-more">Show More</button> 
+    </div>
+
+
+        <!-- FILM DETAY MODALI -->
+    <div id="movie-modal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="movie-title">
+        <button class="modal-close" id="modal-close" aria-label="Kapat">×</button>
+        <div class="modal-body">
+        <img id="movie-poster" alt="" />
+        <div class="modal-text">
+            <h2 id="movie-title"></h2>
+            <p id="movie-overview"></p>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    
+
+    <script src="main.js"></script>
+</body>
+</html>
