@@ -1,3 +1,15 @@
+## Screenshots  
+
+### 🏠 Homepage  
+![Homepage](./screenshots/homepage.png)  
+
+### ⭐ Favorites Page  
+![Favorites](./screenshots/favoritepage.png)  
+
+### 📌 Show More Movies  
+![Show More](./screenshots/showmorepage.png)  
+
+
 #  Movie Site
 
 A simple and elegant movie browsing app built with HTML, CSS, and JavaScript, leveraging the TMDb API for rich movie data.
