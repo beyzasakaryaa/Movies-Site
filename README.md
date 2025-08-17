@@ -56,3 +56,15 @@ Now also includes a **Login & Sign Up system** to manage user sessions and favor
 1. Clone the repo:
    ```bash
    git clone https://github.com/beyzasakaryaa/Movies-Site.git
+
+
+
+##  About the Developer
+
+**Beyza Sakarya** | [@beyzasakaryaa](https://github.com/beyzasakaryaa)  
+Student at Üsküdar Üniversitesi — Istanbul  
+
+Connect with me:  
+- [LinkedIn](https://www.linkedin.com/in/beyzasakaryaa)  
+- [Twitter](https://twitter.com/beyzasakarya20)  
+- [Instagram](https://www.instagram.com/beyzasakaryaa)
