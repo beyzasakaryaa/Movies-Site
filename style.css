@@ -225,3 +225,19 @@ input{
 .load-more:hover {
   background-color: #941212;
 }
+
+#logout-btn{
+  margin-left: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #ffd36e;
+  color: #131720;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+#logout-btn:hover {
+  background-color: #e6b84a;
+}

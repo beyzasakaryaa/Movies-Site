@@ -1,30 +1,94 @@
+// ===== Config =====
 const APILINK = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=8264947b805ec4f8f6b431056e5a8088&page=1';
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
 const POSTER_PATH = 'https://image.tmdb.org/t/p/w500';
 const SEARCHAPI = "https://api.themoviedb.org/3/search/movie?&api_key=8264947b805ec4f8f6b431056e5a8088&query=";
 
+// ===== DOM =====
 const main = document.getElementById("section");
 const form = document.getElementById("form");
 const search = document.getElementById("query");
 const showFavsBtn = document.getElementById("show-favs");
 const loadMoreBtn = document.getElementById("load-more");
+const logoutBtn = document.getElementById('logout-btn'); // <-- Log Out butonu
 
-// === Modal elements ===
+// Modal
 const modal = document.getElementById('movie-modal');
 const modalCloseBtn = document.getElementById('modal-close');
 const modalPoster = document.getElementById('movie-poster');
 const modalTitle = document.getElementById('movie-title');
 const modalOverview = document.getElementById('movie-overview');
 
-// === Favorites (localStorage) ===
-const favs = new Set(JSON.parse(localStorage.getItem('favs') || '[]'));
-function toggleFav(id) {
-  if (favs.has(id)) favs.delete(id);
-  else favs.add(id);
-  localStorage.setItem('favs', JSON.stringify([...favs]));
+// ===== Auth + Per-user favorites helpers =====
+function getCurrentUser() {
+  return localStorage.getItem('currentUser'); // login.js girişte set eder
+}
+function favKeyFor(email) {
+  return `favs_${email}`;
+}
+function loadFavSet() {
+  const email = getCurrentUser();
+  if (!email) return new Set();
+  try {
+    return new Set(JSON.parse(localStorage.getItem(favKeyFor(email)) || '[]'));
+  } catch {
+    return new Set();
+  }
+}
+function saveFavSet(set) {
+  const email = getCurrentUser();
+  if (!email) return;
+  localStorage.setItem(favKeyFor(email), JSON.stringify([...set]));
+}
+function requireLogin() {
+  if (!getCurrentUser()) {
+    alert('Please log in to use Favorites.');
+    location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+// Eski 'favs' anahtarını mevcut kullanıcıya taşı (opsiyonel, nazik geçiş)
+function migrateLegacyFavs() {
+  const email = getCurrentUser();
+  if (!email) return;
+  const legacy = JSON.parse(localStorage.getItem('favs') || '[]');
+  if (!legacy.length) return;
+  const key = favKeyFor(email);
+  const existing = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+  legacy.forEach(id => existing.add(id));
+  localStorage.setItem(key, JSON.stringify([...existing]));
+  localStorage.removeItem('favs');
+}
+function toggleFavForCurrentUser(id, title) {
+  if (!requireLogin()) return { nowFav: false };
+  const set = loadFavSet();
+  if (set.has(id)) {
+    set.delete(id);
+    saveFavSet(set);
+    if (typeof showToast === 'function') showToast(`"${title}" removed from Favorites`);
+  } else {
+    set.add(id);
+    saveFavSet(set);
+    if (typeof showToast === 'function') showToast(`"${title}" added to Favorites`);
+  }
+  return { nowFav: set.has(id) };
 }
 
-// ===== Pagination state for "Show More" =====
+// ===== Logout (her zaman görünür) =====
+if (logoutBtn) {
+  const u = getCurrentUser();
+  if (u) logoutBtn.textContent = `Log Out`; // istersen e-postayı göster
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('currentUser');
+    // görünümü sıfırlamak istersen:
+    showingFavs = false;
+    try { updateLoadMoreButton?.(); } catch {}
+    location.href = 'login.html';
+  });
+}
+
+// ===== Pagination state =====
 let showingFavs = false;
 let currentPage = 1;
 let totalPages = 1;
@@ -42,12 +106,15 @@ function paged(urlBase, page){
 }
 
 function initList(newBase){
+  // opsiyonel geçiş: eski 'favs' -> kullanıcıya özel
+  migrateLegacyFavs();
+
   showingFavs = false;
   baseURL = stripPage(newBase);
   currentPage = 1;
   totalPages = 1;
   main.innerHTML = '';
-  updateLoadMoreButton(); // set initial state
+  updateLoadMoreButton();
   returnMovies(baseURL, currentPage, /*append*/ false);
 }
 
@@ -88,6 +155,9 @@ function returnMovies(urlBase, page = 1, append = false) {
 function renderMovies(list, append = false) {
   if (!append) main.innerHTML = '';
 
+  // Kullanıcının mevcut favori seti
+  const favSet = loadFavSet();
+
   // Create or reuse grid row
   let div_row = main.querySelector('.row');
   if (!div_row) {
@@ -126,22 +196,21 @@ function renderMovies(list, append = false) {
 
     const favBtn = document.createElement('button');
     favBtn.className = 'fav inline';
-    const isFav = favs.has(element.id);
+    const isFav = favSet.has(element.id);
     favBtn.textContent = isFav ? '★' : '☆';
     favBtn.title = isFav ? 'Remove from Favorites' : 'Add to Favorites';
 
     favBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      toggleFav(element.id);
-      const nowFav = favs.has(element.id);
+      const { nowFav } = toggleFavForCurrentUser(element.id, element.title || 'Movie');
+
+      // local görünümü güncelle
+      if (nowFav) favSet.add(element.id);
+      else favSet.delete(element.id);
+
       favBtn.textContent = nowFav ? '★' : '☆';
       favBtn.title = nowFav ? 'Remove from Favorites' : 'Add to Favorites';
 
-      // Toast
-      if (nowFav) showToast(`"${element.title}" added to Favorites`);
-      else showToast(`"${element.title}" removed from Favorites`);
-
-      // If in Favorites view and removed, delete the card
       if (showingFavs && !nowFav) {
         div_column.remove();
       }
@@ -176,24 +245,31 @@ if (loadMoreBtn) {
 }
 
 // ---------- Search ----------
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const q = search.value?.trim();
-  if (q) {
-    initList(SEARCHAPI + encodeURIComponent(q));
-    search.value = '';
-  } else {
-    initList(APILINK);
-  }
-});
+if (form) {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = search.value?.trim();
+    if (q) {
+      initList(SEARCHAPI + encodeURIComponent(q));
+      search.value = '';
+    } else {
+      initList(APILINK);
+    }
+  });
+}
 
 // ---------- Favorites toggle ----------
 if (showFavsBtn) {
   showFavsBtn.addEventListener('click', () => {
+    // login zorunlu
+    if (!getCurrentUser()) {
+      alert('Please log in to view Favorites.');
+      location.href = 'login.html';
+      return;
+    }
     showingFavs = !showingFavs;
     updateFavsButton();
     if (showingFavs) {
-      // Hide Show More in favorites view
       if (loadMoreBtn) loadMoreBtn.style.display = 'none';
       loadFavorites();
     } else {
@@ -209,7 +285,14 @@ function updateFavsButton() {
 
 // ---------- Load favorites (no pagination) ----------
 function loadFavorites() {
-  const favIds = [...favs];
+  const email = getCurrentUser();
+  if (!email) {
+    alert('Please log in to view Favorites.');
+    location.href = 'login.html';
+    return;
+  }
+
+  const favIds = [...loadFavSet()];
   if (favIds.length === 0) {
     main.innerHTML = `<p style="color:#fff;padding:20px">You didn't choose any movie ⭐</p>`;
     return;

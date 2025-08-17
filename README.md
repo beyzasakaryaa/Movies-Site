@@ -1,6 +1,6 @@
 ## Screenshots  
 
-### 🏠 Homepage  
+###  Homepage  
 ![Homepage](./screenshots/homepage.png)  
 
 ### ⭐ Favorites Page  
@@ -8,6 +8,12 @@
 
 ###  Show More Movies  
 ![Show More](./screenshots/showmorepage.png)  
+
+###  Login Page  
+![Login](./screenshots/login.png)  
+
+###  Sign Up Page  
+![Signup](./screenshots/signup.png)  
 
 
 #  Movie Site
@@ -18,7 +24,8 @@ A simple and elegant movie browsing app built with HTML, CSS, and JavaScript, le
 
 ##  Overview
 
-Browse trending movies, search by title, mark your favorite films, and view details—all from a sleek, responsive interface.
+Browse trending movies, search by title, mark your favorite films, and view details—all from a sleek, responsive interface.  
+Now also includes a **Login & Sign Up system** to manage user sessions and favorites per user.
 
 ---
 
@@ -26,10 +33,12 @@ Browse trending movies, search by title, mark your favorite films, and view deta
 
 -  View popular movies with infinite scrolling or "Show More" pagination  
 -  Search for movies by title  
--  Add / remove movies from favorites (persisted in localStorage)  
+-  Add / remove movies from favorites (persisted in localStorage, per user)  
+-  **User Authentication**: Sign Up & Log In forms (stored in localStorage for demo)  
+-  Log Out button (clears session and redirects to login page)  
 -  View movie details in a modal  
 -  Responsive layout for desktop and mobile  
--  Notifications for adding/removing favorites
+-  Notifications for adding/removing favorites  
 
 ---
 
@@ -40,8 +49,6 @@ Browse trending movies, search by title, mark your favorite films, and view deta
 - Vanilla JavaScript  
 - [TMDb API](https://www.themoviedb.org/documentation/api)
 
----
-
 
 ##  Installation
 
@@ -49,7 +56,6 @@ Browse trending movies, search by title, mark your favorite films, and view deta
    ```bash
    git clone https://github.com/beyzasakaryaa/Movies-Site.git
 
----
 
 ##  About the Developer
 
