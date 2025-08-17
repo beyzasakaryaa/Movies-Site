@@ -49,14 +49,12 @@ Now also includes a **Login & Sign Up system** to manage user sessions and favor
 - Vanilla JavaScript  
 - [TMDb API](https://www.themoviedb.org/documentation/api)
 
----
 
 ##  Installation
 
 1. Clone the repo:
    ```bash
    git clone https://github.com/beyzasakaryaa/Movies-Site.git
-
 
 
 ##  About the Developer
