@@ -12,6 +12,11 @@ form.addEventListener("submit",function (e) {
         return;
     }
 
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+    }
+
     let users = JSON.parse(localStorage.getItem("users") || '[]');
 
     const exists = users.some((u) => u.email === email);

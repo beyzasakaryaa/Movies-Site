@@ -62,12 +62,12 @@ input{
   padding: 10px;
 }
 
-.card{
-  position: relative;         /* gerekirse ileride farklı butonlar için */
+.card {
+  width: 325px;     /* sabit genişlik */
+  height: 500px;    /* zaten vardı */
   border-radius: 19px;
-  height: 500px;
-  padding: 15px;
   text-align: center;
+  padding-top: 5px;
   background-color: #151f30;
 }
 
@@ -240,4 +240,49 @@ input{
 
 #logout-btn:hover {
   background-color: #e6b84a;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  column-gap: 20px; /* yatay boşluk */
+  row-gap: 40px;    /* dikey boşluk */
+}
+
+/* Varsayılan: büyük ekran (4 kart yan yana) */
+.column {
+  flex: 0 0 22%;   /* yaklaşık 4 tane sığar */
+  max-width: 22%;
+  padding: 10px;
+}
+
+/* Orta ekran (3 kart yan yana) */
+@media screen and (max-width: 1400px) {
+  .column {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+}
+
+/* Tablet (2 kart yan yana) */
+@media screen and (max-width: 900px) {
+  .row {
+    column-gap: 30px; /* yatay boşluğu artır */
+    row-gap: 50px;    /* dikey boşluğu daha da büyüt */
+  }
+  .column {
+    flex: 0 0 42%;  /* biraz küçült → gap görünür olur */
+    max-width: 42%;
+  }
+}
+
+
+/* Mobil (1 kart yan yana) */
+@media screen and (max-width: 600px) {
+  .column {
+    flex: 0 0 90%;
+    max-width: 90%;
+  }
 }

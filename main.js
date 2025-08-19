@@ -258,6 +258,30 @@ if (form) {
   });
 }
 
+// ---------- Live Search (input event) ----------
+if (search) {
+  search.addEventListener("input", (e) => {
+    const q = e.target.value.trim();
+    if (q.length === 0) {
+      initList(APILINK); // input boşsa default listeye dön
+      return;
+    }
+
+    // API'den getir
+    fetch(SEARCHAPI + encodeURIComponent(q))
+      .then(res => res.json())
+      .then(data => {
+        // sadece baş harfi eşleşenleri filtrele (ör: sadece 'w' ile başlayan)
+        const filtered = data.results.filter(m =>
+          m.title?.toLowerCase().startsWith(q.toLowerCase())
+        );
+        renderMovies(filtered, false);
+      })
+      .catch(err => console.error("Live search error:", err));
+  });
+}
+
+
 // ---------- Favorites toggle ----------
 if (showFavsBtn) {
   showFavsBtn.addEventListener('click', () => {
