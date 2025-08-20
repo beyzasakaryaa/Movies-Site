@@ -14,22 +14,31 @@
         <br><br><br>
 
         <form novalidate id="signup-form">
-            <input type="email" placeholder="Email">
-            <br><br>
-            <input type="password" placeholder="Password">
-            <br><br>
+            <div class="name-row">
+                <input type="text" placeholder="First Name" id="first-name" required>
+                <input type="text" placeholder="Last Name" id="last-name" required>
+            </div>
+            <br>
+            <select id="gender" required>
+                <option value="">Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+            </select>
+            <br>
+            <input type="email" placeholder="Email" id="email" required>
+            <br>
+            <input type="password" placeholder="Password" id="password" required>
+            <br>
             <button class="btn" type="submit"><b>Sign Up</b></button>
         </form>
+
+
 
         <br>
         <a class="login" href="login.html"><b>Log In</b></a>
         <br><br>
-
     </div>
 
-
-
-    
     <script src="signup.js"></script>
 </body>
 </html>

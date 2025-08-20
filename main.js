@@ -12,12 +12,22 @@ const showFavsBtn = document.getElementById("show-favs");
 const loadMoreBtn = document.getElementById("load-more");
 const logoutBtn = document.getElementById('logout-btn'); // <-- Log Out butonu
 
-// Modal
+// Movie Modal
 const modal = document.getElementById('movie-modal');
 const modalCloseBtn = document.getElementById('modal-close');
 const modalPoster = document.getElementById('movie-poster');
 const modalTitle = document.getElementById('movie-title');
 const modalOverview = document.getElementById('movie-overview');
+
+// Profile Modal
+const showProfileBtn = document.getElementById('show-profile');
+const profileModal = document.getElementById('profile-modal');
+const profileCloseBtn = document.getElementById('profile-close');
+const profileAvatar = document.getElementById('profile-avatar');
+const profileName = document.getElementById('profile-name');
+const profileEmail = document.getElementById('profile-email');
+const profileGender = document.getElementById('profile-gender');
+const profileDate = document.getElementById('profile-date');
 
 // ===== Auth + Per-user favorites helpers =====
 function getCurrentUser() {
@@ -78,10 +88,9 @@ function toggleFavForCurrentUser(id, title) {
 // ===== Logout (her zaman görünür) =====
 if (logoutBtn) {
   const u = getCurrentUser();
-  if (u) logoutBtn.textContent = `Log Out`; // istersen e-postayı göster
+  if (u) logoutBtn.textContent = `Log Out`;
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('currentUser');
-    // görünümü sıfırlamak istersen:
     showingFavs = false;
     try { updateLoadMoreButton?.(); } catch {}
     location.href = 'login.html';
@@ -335,7 +344,7 @@ function loadFavorites() {
   });
 }
 
-// ---------- Modal helpers ----------
+// ---------- Movie Modal helpers ----------
 function openModal({ title, overview, poster_path }) {
   modalTitle.textContent = title || 'No title';
   modalOverview.textContent = overview?.length ? overview : 'No overview available.';
@@ -389,3 +398,111 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 300);
   }, 2500);
 }
+
+/* ===========================
+   PROFILE: load & modal open
+   =========================== */
+
+// Different sign-up implementations you used:
+// - Array under "users": [{ name, surname, gender, email, password, registrationDate }]
+// - Direct key with the email: localStorage.setItem(email, JSON.stringify(user))
+// - (Optional) some versions: localStorage.setItem('user_'+email, ...)
+// We'll try in this order: exact email key → users array → user_${email}
+function readUserByEmail(email) {
+  if (!email) return null;
+
+  // 1) Direct key (your current signup code)
+  try {
+    const direct = localStorage.getItem(email);
+    if (direct) {
+      const obj = JSON.parse(direct);
+      if (obj && obj.email) return obj;
+    }
+  } catch {}
+
+  // 2) Users array
+  try {
+    const arr = JSON.parse(localStorage.getItem('users') || '[]');
+    if (Array.isArray(arr)) {
+      const found = arr.find(u => (u.email || '').toLowerCase() === email.toLowerCase());
+      if (found) return found;
+    }
+  } catch {}
+
+  // 3) user_${email}
+  try {
+    const pref = localStorage.getItem(`user_${email}`);
+    if (pref) {
+      const obj = JSON.parse(pref);
+      if (obj && obj.email) return obj;
+    }
+  } catch {}
+
+  return null;
+}
+
+function formatRegDate(u) {
+  // support both "registrationDate" and "registeredAt"
+  const raw = u.registrationDate || u.registeredAt;
+  if (!raw) return '—';
+  const d = new Date(raw);
+  if (isNaN(d)) return raw;
+  try {
+    return d.toLocaleString();
+  } catch {
+    return d.toISOString();
+  }
+}
+
+function loadProfileIntoModal() {
+  const email = getCurrentUser();
+  if (!email) {
+    alert('Please log in first.');
+    location.href = 'login.html';
+    return;
+  }
+
+  const user = readUserByEmail(email);
+  if (!user) {
+    // fallback: clear / unknown
+    profileName.textContent = 'Unknown';
+    profileEmail.textContent = email;
+    profileGender.textContent = '—';
+    profileDate.textContent = '—';
+    return;
+  }
+
+  const first = user.firstName || user.name || '';
+  const last = user.lastName || user.surname || '';
+  profileName.textContent = `${first} ${last}`.trim() || 'Unspecified';
+  profileEmail.textContent = user.email || email;
+  profileGender.textContent = user.gender || 'Unspecified';
+  profileDate.textContent = formatRegDate(user);
+
+  // (Opsiyonel) gender’e göre avatar değiştirilebilir
+  if (user.gender === 'male') profileAvatar.src = 'images/male.png';
+  else if (user.gender === 'female') profileAvatar.src = 'images/female.png';
+  else profileAvatar.src = 'images/default.png';
+}
+
+// Open/close profile modal
+if (showProfileBtn) {
+  showProfileBtn.addEventListener('click', () => {
+    loadProfileIntoModal();
+    if (!profileModal) return;
+    document.body.style.overflow = 'hidden';
+    profileModal.classList.add('open');
+    profileModal.setAttribute('aria-hidden', 'false');
+    profileCloseBtn?.focus();
+  });
+}
+
+function closeProfileModal() {
+  if (!profileModal) return;
+  profileModal.classList.remove('open');
+  profileModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+profileCloseBtn?.addEventListener('click', closeProfileModal);
+profileModal?.addEventListener('click', (e) => { if (e.target === profileModal) closeProfileModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && profileModal?.classList.contains('open')) closeProfileModal(); });

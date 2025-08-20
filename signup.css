@@ -1,38 +1,77 @@
+/* ---- Genel: yatay kaydırmaya izin ver ---- */
 body {
   margin: 0;
-  height: 100vh;                
+  height: 100vh;
   display: flex;
-  justify-content: center;      
-  align-items: center;          
-  background: #dfdfe6;         
+  justify-content: center;
+  align-items: center;
+  background: #dfdfe6;
+  overflow-x: auto;           /* <<< ekle: dar ekranda kart sabit kalsın, sayfa kayar */
 }
 
+/* ---- Kart: sabit genişlik ---- */
 .auth-wrap {
   background-color: #ffffff;
   color: black;
-  width: 25%;
+  /* width: 25%;              */ /* <<< kaldır */
+  /* max-width: 400px;        */ /* <<< kaldır */
+  width: 400px;                /* <<< sabit tut */
+  min-width: 400px;            /* <<< küçülmesin */
   text-align: center;
   border-radius: 25px;
+  padding: 20px 0;
+  box-sizing: border-box;      /* <<< taşmaları önlemeye yardımcı */
 }
 
-#signup-form > input{
-    width: 80%;
-    height: 30px;
-    border-radius: 10px;
-    border: 2px solid #cfcfd2;
+/* ---- İki input hep yan yana kalsın, sarmalanmasın ---- */
+.name-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  flex-wrap: nowrap;           /* <<< alt alta düşmeyi engelle */
+  white-space: nowrap;         /* <<< güvence */
 }
 
-#signup-form > .btn{
-    width: 80%;
-    height: 50px;
-    border-radius: 30px;
-    border: 2px solid #cfcfd2;
+.name-row input {
+  flex: 1 1 0;                 /* eşit pay + taşma yapmasın */
+  min-width: 0;                /* iç metin taşmasını engeller */
+  height: 30px;
+  border-radius: 10px;
+  border: 2px solid #cfcfd2;
+  padding: 5px;
 }
 
-.auth-wrap > .login{
-    margin-right: 10%;
-    display: block;
-    text-align: right;
-    text-decoration: none;
-    color: red;
+/* Diğer inputlar aynı kalabilir */
+#signup-form input[type="email"],
+#signup-form input[type="password"],
+#signup-form select {
+  width: 80%;
+  height: 30px;
+  border-radius: 10px;
+  border: 2px solid #cfcfd2;
+  padding: 5px;
+  margin: 10px 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#signup-form > .btn {
+  width: 80%;
+  height: 50px;
+  border-radius: 30px;
+  border: 2px solid #cfcfd2;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth-wrap > .login {
+  display: block;
+  text-align: right;
+  margin-right: 10%;
+  text-decoration: none;
+  color: red;
+  margin-top: 10px;
 }

@@ -1,38 +1,57 @@
+/* Sayfa: ortala + dar ekranda yatay kaydırma */
 body {
   margin: 0;
-  height: 100vh;                
+  height: 100vh;
   display: flex;
-  justify-content: center;      
-  align-items: center;          
-  background: #dfdfe6;         
+  justify-content: center;
+  align-items: center;
+  background: #dfdfe6;
+  overflow-x: auto;            /* dar ekranda kart küçülmesin, sayfa kayar */
 }
 
+/* Kart: sabit genişlik */
 .auth-wrap {
   background-color: #ffffff;
   color: black;
-  width: 25%;
+  /* width: 25%; */            /* kaldırıldı */
+  width: 400px;                /* sabit */
+  min-width: 400px;            /* daha da küçülmesin */
+  max-width: 400px;
   text-align: center;
   border-radius: 25px;
+  padding: 24px 0;             /* iç boşluk */
+  box-sizing: border-box;      /* taşmaları önle */
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 }
 
+/* Form alanları */
 #login-form > input{
-    width: 80%;
-    height: 30px;
-    border-radius: 10px;
-    border: 2px solid #cfcfd2;
+  width: 80%;
+  height: 38px;                /* biraz daha rahat */
+  border-radius: 10px;
+  border: 2px solid #cfcfd2;
+  padding: 0 10px;             /* iç boşluk */
+  box-sizing: border-box;
+  margin: 10px auto;           /* dikey boşluk + ortalama */
+  display: block;
 }
 
 #login-form > .btn{
-    width: 80%;
-    height: 50px;
-    border-radius: 30px;
-    border: 2px solid #cfcfd2;
+  width: 80%;
+  height: 48px;
+  border-radius: 30px;
+  border: 2px solid #cfcfd2;
+  cursor: pointer;
+  margin: 10px auto 0;
+  display: block;
 }
 
+/* "Register" linki */
 .auth-wrap > .register{
-    margin-right: 10%;
-    display: block;
-    text-align: right;
-    text-decoration: none;
-    color: red;
+  margin-right: 10%;
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  color: red;
+  margin-top: 10px;
 }
